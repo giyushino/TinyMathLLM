@@ -1,9 +1,9 @@
-from transformers import LlamaForCausalLM, LlamaTokenizer, BitsAndBytesConfig 
+from transformers import LlamaForCausalLM, LlamaTokenizer 
 import torch
 
-def load_quantized_model(model_path, tokenizer_path = None):
+def load_model(model_path, tokenizer_path = None):
     """
-    Load quantized TinyLlama model or finetuned version using transformers
+    Load base TinyLlama model or finetuned version using transformers
     
     Args:
         model_path (str): Model name or path to model if finetuned 
@@ -16,22 +16,16 @@ def load_quantized_model(model_path, tokenizer_path = None):
     if tokenizer_path is None:
         tokenizer_path = model_path
 
-    quantization_config = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_use_double_quant=True,
-    bnb_4bit_quant_type="nf4",
-    bnb_4bit_compute_dtype=torch.float16  
-    )
+    llama = LlamaForCausalLM.from_pretrained(model_path)
+    tokenizer = LlamaTokenizer.from_pretrained(tokenizer_path)
 
-    model = LlamaForCausalLM.from_pretrained(model_path, quantization_config = quantization_config)
-    tokenizer = LlamaTokenizer.from_pretrained(model_path)
+    return llama, tokenizer
 
-    return model, tokenizer
 
-def get_quantized_response(model, tokenizer, prompt = None, role = None, modify = None, device = torch.device("cuda" if torch.cuda.is_available() else "cpu")):
+def get_response(model, tokenizer, device = torch.device("cuda" if torch.cuda.is_available() else "cpu"), prompt = None, role = None, modify = None):
     """
-    Returns response of quantized TinyLlama based on prompt or user input
-
+    Returns response of TinyLlama based on prompt or user input
+    
     Args:
         model (LlamaForCausalLM): Model used
         tokenizer (LlamaTokenizer): Tokenized used
@@ -45,7 +39,7 @@ def get_quantized_response(model, tokenizer, prompt = None, role = None, modify 
     llama = model
     llama.to(device)
     llama_tokenizer = tokenizer
- 
+   
     if prompt is None:
         prompt = input("Enter: ")
     
@@ -64,8 +58,9 @@ def get_quantized_response(model, tokenizer, prompt = None, role = None, modify 
     outputs = llama.generate(enter, max_new_tokens = 128)
     print(tokenizer.decode(outputs[0]))
     return tokenizer.decode(outputs[0])
+    
 
-llama, llama_tokenizer = load_quantized_model("TinyLlama/TinyLlama-1.1B-Chat-v1.0")
+llama, tokenizer = load_model("TinyLlama/TinyLlama-1.1B-Chat-v1.0") 
 
-get_quantized_response(llama, llama_tokenizer, role = "You are a mathematics professor who helps students with their math problems. Provide them with the answer")
- 
+get_response(llama, tokenizer, role = "You are a mathematics professor who helps students with their math problems. Provide them with the answer")
+
