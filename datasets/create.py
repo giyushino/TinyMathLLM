@@ -63,7 +63,7 @@ def matrix_det(low = 1, high = 20, dim = random.randint(2, 5)):
     return m1, np.linalg.det(m1)
 
 
-def create_question_extract():
+def create_question_answer():
     """
     Creates dataset with sample question, the chatbot is supposed to extract the important information + determine what type of problem it is
     
@@ -110,7 +110,7 @@ def create_question_extract():
     return prompt
 
 
-def create_question_answer():
+def create_question_extract():
 
     """
     Creates dataset with sample question, the chatbot is supposed to answer the math problem
@@ -159,13 +159,13 @@ def create_question_answer():
 
 def create_dataset(dataset_type, num_questions = NUM_QUESTIONS):
     if dataset_type == "extract":
-        with open(r"C:\Users\allan\nvim\tinyMath\TinyMathLLM\datasets\extract_test.json", "w") as file:
+        with open(r"C:\Users\allan\nvim\tinyMath\TinyMathLLM\datasets\testset\extract.json", "w") as file:
             for i in range(num_questions):
                 line = create_question_extract()
                 file.write(json.dumps(line) + "\n")
                 print(f"Line {i} created")
     elif dataset_type == "answer":
-        with open(r"C:\Users\allan\nvim\tinyMath\TinyMathLLM\datasets\answer_test.json", "w") as file:
+        with open(r"C:\Users\allan\nvim\tinyMath\TinyMathLLM\datasets\testset\answer.json", "w") as file:
             for i in range(num_questions):
                 line = create_question_answer()
                 file.write(json.dumps(line) + "\n")
@@ -174,4 +174,5 @@ def create_dataset(dataset_type, num_questions = NUM_QUESTIONS):
         print("Invalid dataset_type")
 
 
-create_dataset("extract", 100) 
+create_dataset("extract", 1000) 
+create_dataset("answer", 1000)

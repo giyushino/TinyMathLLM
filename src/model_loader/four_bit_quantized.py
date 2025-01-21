@@ -35,6 +35,7 @@ def get_quantized_response(model, tokenizer, prompt = None, role = None, modify 
     Args:
         model (LlamaForCausalLM): Model used
         tokenizer (LlamaTokenizer): Tokenized used
+        role (str, optional): Instructions on how model should respond
         prompt (str, optional): Message fed into tokenizer and model. If left blank, will prompt user for input
         modify (str, optional): Modify prompt before feeding into model
     
@@ -65,3 +66,5 @@ def get_quantized_response(model, tokenizer, prompt = None, role = None, modify 
     print(tokenizer.decode(outputs[0]))
     return tokenizer.decode(outputs[0])
 
+#llama, llama_tokenizer = load_quantized_model("TinyLlama/TinyLlama-1.1B-Chat-v1.0")
+#get_quantized_response(llama, llama_tokenizer)

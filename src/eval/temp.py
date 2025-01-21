@@ -2,8 +2,8 @@ from src.model_loader.four_bit_quantized import load_quantized_model, get_quanti
 from datasets import load_dataset
 import json 
 
-DATASET_PATH = r"C:\Users\allan\nvim\TinyMath\TinyMathLLM\datasets\testset\answer.json"
-SAVE_PATH =  r"C:\Users\allan\nvim\TinyMath\TinyMathLLM\src\eval\inference_results\base_answer_testset.json"
+DATASET_PATH = r"C:\Users\allan\nvim\TinyMath\TinyMathLLM\datasets\testset\extract.json"
+SAVE_PATH =  r"C:\Users\allan\nvim\TinyMath\TinyMathLLM\src\eval\inference_results\base_extract_testset.json"
 
 def model_inference(model_type = 'base', dataset_path = DATASET_PATH, save_path = SAVE_PATH):
     """
