@@ -24,7 +24,7 @@ def load_quantized_model(model_path, tokenizer_path = None):
     )
 
     model = LlamaForCausalLM.from_pretrained(model_path, quantization_config = quantization_config)
-    tokenizer = LlamaTokenizer.from_pretrained(model_path)
+    tokenizer = LlamaTokenizer.from_pretrained(tokenizer_path)
 
     return model, tokenizer
 
@@ -66,5 +66,6 @@ def get_quantized_response(model, tokenizer, prompt = None, role = None, modify 
     print(tokenizer.decode(outputs[0]))
     return tokenizer.decode(outputs[0])
 
-#llama, llama_tokenizer = load_quantized_model("TinyLlama/TinyLlama-1.1B-Chat-v1.0")
-#get_quantized_response(llama, llama_tokenizer)
+
+llama, llama_tokenizer = load_quantized_model(r"C:\Users\allan\nvim\TinyMath\TinyMathLLM\models\extract_weights\checkpoint-900", "TinyLlama/TinyLlama-1.1B-Chat-v1.0")
+get_quantized_response(llama, llama_tokenizer, modify = "What kind of question is this, and what are the important values?")

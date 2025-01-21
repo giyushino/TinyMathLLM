@@ -3,7 +3,7 @@ from datasets import load_dataset
 import json 
 
 DATASET_PATH = r"C:\Users\allan\nvim\TinyMath\TinyMathLLM\datasets\testset\extract.json"
-SAVE_PATH =  r"C:\Users\allan\nvim\TinyMath\TinyMathLLM\src\eval\inference_results\base_extract_testset.json"
+SAVE_PATH =  r"C:\Users\allan\nvim\TinyMath\TinyMathLLM\src\eval\inference_results\finetuned_extract_testset.json"
 
 def model_inference(model_type = 'base', dataset_path = DATASET_PATH, save_path = SAVE_PATH):
     """
@@ -41,4 +41,4 @@ def model_inference(model_type = 'base', dataset_path = DATASET_PATH, save_path 
             
             print(f"Line {i} created")
         
-model_inference("base")
+model_inference("extract")
