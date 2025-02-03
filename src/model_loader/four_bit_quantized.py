@@ -28,7 +28,7 @@ def load_quantized_model(model_path, tokenizer_path = None):
 
     return model, tokenizer
 
-def get_quantized_response(model, tokenizer, prompt = None, role = None, modify = None, device = torch.device("cuda" if torch.cuda.is_available() else "cpu")):
+def get_quantized_response(model, tokenizer, prompt = None, role = None, max_new_tokens=128, modify = None, device = torch.device("cuda" if torch.cuda.is_available() else "cpu"), should_print = False):
     """
     Returns response of quantized TinyLlama based on prompt or user input
 
@@ -51,7 +51,7 @@ def get_quantized_response(model, tokenizer, prompt = None, role = None, modify 
         prompt = input("Enter: ")
     
     if modify is not None:
-        prompt += modify 
+        prompt += " " +  modify 
 
     messages = [
         {
@@ -62,10 +62,11 @@ def get_quantized_response(model, tokenizer, prompt = None, role = None, modify 
     ]
 
     enter = llama_tokenizer.apply_chat_template(messages, tokenize = True, add_generation_prompt = True, return_tensors ="pt").to(device)
-    outputs = llama.generate(enter, max_new_tokens = 128)
-    print(tokenizer.decode(outputs[0]))
+    outputs = llama.generate(enter, max_new_tokens = max_new_tokens)
+    if should_print:
+        print(tokenizer.decode(outputs[0]))
     return tokenizer.decode(outputs[0])
 
 
-llama, llama_tokenizer = load_quantized_model(r"C:\Users\allan\nvim\TinyMath\TinyMathLLM\models\extract_weights\quantized\checkpoint-1000", "TinyLlama/TinyLlama-1.1B-Chat-v1.0")
-get_quantized_response(llama, llama_tokenizer, modify = "What kind of question is this, and what are the important values?")
+#llama, llama_tokenizer = load_quantized_model(r"C:\Users\allan\nvim\TinyMath\TinyMathLLM\models\extract_weights\quantized\checkpoint-1000", "TinyLlama/TinyLlama-1.1B-Chat-v1.0")
+#get_quantized_response(llama, llama_tokenizer, modify = "What kind of question is this, and what are the important values?")

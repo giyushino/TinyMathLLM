@@ -1,7 +1,7 @@
 import torch 
-from transformers import pipeline
+from transformers import pipeline, LlamaForCausalLM, LlamaTokenizer 
 
-def load_model_pipeline(model, prompt = None, role = None, modify = None):
+def load_model_pipeline(custom, model_path, prompt = None, role = None, modify = None):
     """
     Load LLM using transformers pipeline
 
@@ -12,8 +12,11 @@ def load_model_pipeline(model, prompt = None, role = None, modify = None):
         (str): Model generated text
     """
 
-
-    pipe = pipeline("text-generation", model=model, torch_dtype=torch.bfloat16, device_map="auto")
+    if custom:
+        model = LlamaForCausalLM.from_pretrained(model_path)
+    else:
+        model = "TinyLlama/TinyLlama-1.1B-Chat-v1.0" 
+    pipe = pipeline("text-generation", model=model, tokenizer = "TinyLlama/TinyLlama-1.1B-Chat-v1.0", torch_dtype=torch.bfloat16, device_map="auto")
 
     if prompt is None:
         prompt = input("Enter: ")
@@ -34,3 +37,4 @@ def load_model_pipeline(model, prompt = None, role = None, modify = None):
     print(outputs[0]["generated_text"])
     return outputs[0]["generated_text"]
 
+load_model_pipeline(custom=True, model_path = r"C:\users\allan\nvim\tinymath\trained_models\answer_no_mult")
